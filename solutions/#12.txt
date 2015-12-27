@@ -1,0 +1,63 @@
+//find the first Gaussian Sum (triangular number) that has over NR_OF_DIVISORS divisors
+public class Euler12 {
+	public static void main(String[] args) {
+		final int NR_OF_DIVISORS = 500;
+
+		/*
+		 * The nth triangular number can be written as n(n+1)/2. Assumption: the
+		 * first triangular number that has NR_OF_DIVISORS divisors has to be
+		 * greater or equal to NR_OF_DIVISORS. Therefore, n(n+1)/2=NR_OFDIVISORS
+		 * => n(n+1)=NR_OFDIVISORS*2 => we can initialize the variable
+		 * triangular with (sqrt(NR_OF_DIVISORS) - 1) * sqrt(NR_OF_DIVISORS) / 2
+		 */
+		long n = (long) Math.sqrt(2 * NR_OF_DIVISORS) - 1;
+		long triangular = n * (n + 1) / 2;
+		/*
+		 * To get the (n+1)th triangular number we only need to add i=n+1 to the
+		 * variable triangular.
+		 */
+		long i = n + 1;
+
+		while (nrOfDivisors(triangular) <= NR_OF_DIVISORS) {
+			triangular += i;
+			// increment i to get the next triangular
+			i++;
+		}
+
+		System.out
+				.printf("The first triangular number to have at least %d divisors is %d.\n",
+						NR_OF_DIVISORS, triangular);
+	}
+
+	private static int nrOfDivisors(long x) {
+		long div = 2;
+		int nrOfDivs = 1, exp = 0;
+
+		// checking for 2, hence excluding all other even numbers
+		while (x % div == 0) {
+			x /= div;
+			exp++;
+		}
+
+		nrOfDivs *= (exp + 1);
+
+		// assigning div to 3 since it makes no sense to check for even numbers
+		div = 3;
+
+		while (x > 1) {
+			if (x % div == 0) {
+				exp = 0;
+
+				do {
+					x /= div;
+					exp++;
+				} while (x % div == 0);
+				nrOfDivs *= (exp + 1);
+
+			}
+			div += 2;
+		}
+
+		return nrOfDivs;
+	}
+}

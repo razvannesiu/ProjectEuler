@@ -1,0 +1,60 @@
+public class Euler9 {
+	public static void main(String[] args) {
+		/*
+		 * Euclid's formula for generating all Pythagorean triples: for 2
+		 * non-zero positive integers m > n and a constant k>1, we have a =
+		 * k(m^2-n^2), b = k(2mn), c = k(m^2+n^2), so the sum of a triple is
+		 * 2mk(m+n)
+		 */
+		// (possible) sum of a triple, which is 2mk(m+n)
+		final int SUM = 1000;
+		// half of sum or mk(m+n)
+		final int HALF = SUM / 2;
+		int m, n = 0, product /* product of the sides */, k /* k=constant */, tmp;
+		// If 2mk(m+n) = SUM, then mk(m+n) = HALF
+		// If m,n are non-zero positive integers and m>n, then m<m+n
+		/*
+		 * Since HALF has to be divisible by m and (m+n), that means that the
+		 * highest value for m is limit (the integer part of the square root of
+		 * HALF)
+		 */
+		int limit = (int) Math.sqrt(HALF);
+		// limitk is the maximum value for k
+		int limitk;
+		// m has to be greater than 1 (if m=1 then n=0, but n must be non-zero)
+		for (m = limit; m > 1; m--) {
+			if (HALF % m == 0) {
+				// tmp = k(m+n)
+				tmp = HALF / m;
+				/*
+				 * The highest possible divisors of tmp are: tmp, tmp/2, tmp/3.
+				 * If k=tmp, then m+n=1, so m=1 & n=0 (invalid: n must be
+				 * non-zero). If k=tmp/2, then m+n=2, so there's either m=1 &
+				 * n=1 (invalid: m must be greater than n) or m=2 & n=0
+				 * (invalid: n must be non-zero). Maximum value for k is tmp /
+				 * 3, which gives the unique solution m=2 & n=1. Therefore,
+				 * limitk = tmp / 3.
+				 */
+				limitk = tmp / 3;
+				for (k = 1; k <= limitk; k++) {
+					if (tmp % k == 0) {
+						n = tmp / k - m;
+						// in case that HALF is m squared or m <= n
+						if (n == 0 || m <= n) {
+							continue;
+						}
+						// product = abc = (k^3)(m^2-n^2)2mn(m^2+n^2) =
+						// (k^3)(m^4-n^4)2mn
+						product = (int) (Math.pow(k, 3)
+								* (Math.pow(m, 4) - Math.pow(n, 4)) * 2 * m * n);
+						System.out
+								.printf("The product of the triplet that has the sum %d is %d.\n",
+										SUM, product);
+						return;
+					}
+				}
+			}
+		}
+		System.out.printf("There is no triplet that has the sum %d.\n", SUM);
+	}
+}

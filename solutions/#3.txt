@@ -1,0 +1,30 @@
+import java.util.Scanner;
+
+public class Euler3 {
+	public static void main(String[] args) {
+		long i, x, limit;
+		Scanner in = new Scanner(System.in);
+		
+		System.out.println("Input number: ");
+		x = in.nextLong();
+		in.close();
+		limit = (long) Math.sqrt(x);
+
+		for (i = limit; i > 1; i--) {
+			if (isPrime(i) && x % i == 0) {
+				break;
+			}
+		}
+		System.out.println("The largest prime factor is " + i);
+	}
+
+	private static boolean isPrime(long nr) {
+		long i, limit = (long) Math.sqrt(nr);
+		for (i = 2; i < limit; i++) {
+			if (nr % i == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+}

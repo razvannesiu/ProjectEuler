@@ -1,0 +1,36 @@
+public class Euler4 {
+	public static void main(String[] args) {
+		// biggest palindrome that could be the product of two 3-digit numbers
+		// is 997799
+		int number = 997799, secondTerm;
+		while (number > 10000) {
+			if (isPalindrome(number)) {
+				// find a 3-digit divisor
+				for (int i = 999; i > 99; i--) {
+					if (number % i == 0) {
+						secondTerm = number / i;
+						if (secondTerm > 99 && secondTerm < 1000) {
+							System.out
+									.println("The largest palindrome made from the product of two 3-digit numbers is "
+											+ number);
+							return;
+						}
+					}
+				}
+			}
+			number--;
+		}
+	}
+
+	private static boolean isPalindrome(int number) {
+		int reverse = 0, tmp = number;
+		while (tmp != 0) {
+			reverse = reverse * 10 + tmp % 10;
+			tmp /= 10;
+		}
+		if (number == reverse) {
+			return true;
+		}
+		return false;
+	}
+}

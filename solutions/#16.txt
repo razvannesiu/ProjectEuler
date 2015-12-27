@@ -1,0 +1,19 @@
+import java.math.BigInteger;
+
+public class Euler16 {
+	public static final String NR = "2";
+	public static final int EXPONENT = 1000;
+
+	public static void main(String[] args) {
+		BigInteger number = new BigInteger(NR);
+		number = number.pow(EXPONENT);
+		String numberAsString = number.toString();
+		int sum = 0;
+		while (!number.equals(BigInteger.ZERO)) {
+			sum += number.remainder(BigInteger.TEN).intValue();
+			number = number.divide(BigInteger.TEN);
+		}
+		System.out.printf("The sum of the digits of %s is %d.\n",
+				numberAsString, sum);
+	}
+}

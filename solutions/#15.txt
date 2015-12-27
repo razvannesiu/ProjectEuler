@@ -1,0 +1,27 @@
+public class Euler15 {
+	public static void main(String[] args) {
+		// square matrix with NxN elements
+		final int N = 20;
+		/*
+		 * Number of routes can be calculated with the formula for finding the
+		 * central number of each odd numbered row (greater or equal to 3) from
+		 * Pascal's triangle: ((2N)!)/(N!)^2 or simplified
+		 * (N+1)(N+2)...(2N)/(N!). We're not going to use factorials since 20!
+		 * exceeds the upper bound of long type.
+		 */
+		long routes = 1;
+		int limit = 2 * N /* last value for i */, factor = 2 /* factor of N! */;
+		for (int i = N + 1; i <= limit; i++) {
+			// multiply routes by each factor of the numerator
+			routes *= i;
+			// divide routes by each of the factors of N! (the denominator)
+			while (routes % factor == 0 && factor <= N) {
+				routes /= factor;
+				factor++;
+			}
+		}
+		System.out.printf("There are %d lattice routes in a %dx%d grid.\n",
+				routes, N, N);
+
+	}
+}

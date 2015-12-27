@@ -1,0 +1,39 @@
+public class Euler7 {
+
+	// array is from 0 to 10000, so it has 10001 elements
+	public final static int LENGTH = 10001;
+	private static int[] primes = new int[LENGTH];
+
+	public static void main(String[] args) {
+		// index of the next prime number to be inserted into array
+		int index = 0;
+		primes[index] = 2;
+		// check all the odd numbers greater or equal to 3 if they're prime
+		// until array is full
+		for (int i = 3; index != LENGTH - 1; i += 2) {
+			if (isPrime(i)) {
+				primes[++index] = i;
+			}
+		}
+		// print last element from the array
+		System.out.printf("The %dst prime number is %d.\n", LENGTH,
+				primes[LENGTH - 1]);
+		// https://primes.utm.edu/howmany.html
+		int estimate = (int) (LENGTH * (Math.log(LENGTH)
+				+ Math.log(Math.log(LENGTH)) - 1));
+		System.out
+				.printf("Pierre Dusart's estimation of the nth prime: f(%d) = %d.\nAccuracy: %.2f%%",
+						LENGTH, estimate, estimate * 100.0 / primes[LENGTH - 1]);
+	}
+
+	private static boolean isPrime(int number) {
+		int limit = (int) Math.sqrt(number);
+		// check if number is divisible by the odd primes lower than limit
+		for (int i = 1; i < limit; i++) {
+			if (number % primes[i] == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+}

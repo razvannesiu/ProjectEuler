@@ -1,0 +1,18 @@
+public class Euler1 {
+	public static void main(String[] args) {
+		// find sum of the multiples of 3 or 5 that are below 1000
+		int threshold = 1000, sum,
+		// last term for the Gauss sum for the multiples of 3
+		lastTerm3 = (threshold - 1) / 3,
+		// last term for the Gauss sum for the multiples of 5
+		lastTerm5 = (threshold - 1) / 5,
+		// last term for the Gauss sum for the multiples of 5
+		lastTerm15 = (threshold - 1) / 15;
+
+		sum = 3 * (lastTerm3 * (lastTerm3 + 1)) / 2 + 5
+				* (lastTerm5 * (lastTerm5 + 1)) / 2 - 15
+				* (lastTerm15 * (lastTerm15 + 1)) / 2;
+
+		System.out.println("The sum is: " + sum);
+	}
+}

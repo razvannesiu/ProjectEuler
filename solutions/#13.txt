@@ -1,0 +1,40 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class Euler13 {
+	public static void main(String[] args) throws FileNotFoundException {
+		int cols = 50, len = 52;
+		int[] sum = new int[len];
+		int i = 0, j = 0, k, counter = 0;
+		String line;
+		Scanner in = new Scanner(new File("#file13.txt"));
+
+		while (in.hasNextLine()) {
+			line = in.nextLine();
+			k = len - 1;
+			for (j = cols - 1; j >= 0; j--) {
+				sum[k--] += Integer.parseInt(line.charAt(j) + "");
+			}
+		}
+		in.close();
+
+		for (k = len - 1; k >= 2; k--) {
+			sum[k - 2] += sum[k] / 100;
+			sum[k - 1] += (sum[k] / 10) % 10;
+			sum[k] %= 10;
+		}
+
+		i = 0;
+		System.out.println("The first 10 numbers from the sum are ");
+
+		while (sum[i] == 0) {
+			i++;
+		}
+
+		while (counter < 10) {
+			System.out.print(sum[i++]);
+			counter++;
+		}
+	}
+}

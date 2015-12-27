@@ -1,0 +1,60 @@
+import java.io.FileReader;
+import java.io.IOException;
+
+public class Euler8 {
+	// ADJ is the number of adjacent digits that contribute to the product
+	public static final int ADJ = 13;
+	public static final int LENGTH = 1000;
+
+	public static void main(String[] args) {
+		try {
+			FileReader reader = new FileReader("#file8.txt");
+			// array that keeps the non-zero digits of the number
+			int[] array = new int[LENGTH];
+			// the ASCII of the next character to be read from the reader
+			int next,
+			// the digit that represents the character read from the reader
+			digit,
+			// when counter becomes equal to ADJ, we have a new product
+			counter = 0,
+			// index for the array
+			i = 0;
+			long product = 1, max = 0;
+
+			// read character by character from the file
+			while ((next = reader.read()) != -1) {
+				// if the character read is not a new-line
+				if (next != '\n' && next != '\r') {
+					digit = Integer.parseInt((char) next + "");
+					// if digit is 0, reset product and counter
+					if (digit == 0) {
+						product = 1;
+						counter = 0;
+						// there's no need to put the 0's into the array, so we
+						// can
+						// continue reading the next characters
+						continue;
+					}
+					array[i++] = digit;
+					product *= digit;
+					counter++;
+					if (counter == ADJ) {
+						if (product > max) {
+							max = product;
+						}
+						// eliminate the first factor from this product
+						product /= array[i - ADJ];
+						// drop the counter to ADJ - 1
+						counter--;
+					}
+				} else {
+					continue;
+				}
+			}
+			System.out.println("The maximum product is " + max);
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

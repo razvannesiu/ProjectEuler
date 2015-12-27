@@ -1,0 +1,29 @@
+public class Euler5 {
+	public static void main(String[] args) {
+		final int THRESHOLD = 20;
+		int lcm = 2;
+		for (int i = 3; i <= THRESHOLD; i++) {
+			lcm = lcm(lcm, i);
+		}
+		System.out.printf("The number that is evenly divisable by all numbers from 1 to %d is %d.", THRESHOLD, lcm);
+	}
+
+	// lowest common multiple
+	private static int lcm(int a, int b) {
+		return Math.abs(a * (b / gcd(a, b)));
+	}
+
+	// greatest common divisor
+	private static int gcd(int a, int b) {
+		int remainder;
+		if (a % b == 0 || b % a == 0) {
+			return Math.min(a, b);
+		}
+		while (b > 0) {
+			remainder = a % b;
+			a = b;
+			b = remainder;
+		}
+		return a;
+	}
+}

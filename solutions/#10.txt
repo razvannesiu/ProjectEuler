@@ -1,0 +1,42 @@
+public class Euler10 {
+
+	public static final int THRESHOLD = 2000000;
+	/*
+	 * LENGTH represents an upper estimation of the number primes lower than
+	 * THRESHOLD. The length of the array is calculated using Pierre Dusart's
+	 * upper bound approximation of pi(x) from
+	 * https://primes.utm.edu/howmany.html
+	 */
+	public static final int LENGTH = (int) ((THRESHOLD / Math.log(THRESHOLD)) * (1 + 1.2762 / Math
+			.log(THRESHOLD)));
+	// the array containing all the primes lower than THRESHOLD
+	private static long[] primes = new long[LENGTH];
+
+	public static void main(String[] args) {
+		// index of the next prime number to be inserted into array
+		int index = 0;
+		primes[index] = 2;
+		long sum = 2;
+		// check all the odd numbers between 3 and THRESHOLD if they're prime
+		for (int i = 3; i < 2000000; i += 2) {
+			if (isPrime(i)) {
+				primes[++index] = i;
+				sum += primes[index];
+			}
+		}
+		System.out
+				.printf("The sum of the first %d prime numbers is %d.\nNumber of non-zero elements in array: %d.\nDeclared length of array is: %d.\nMemory efficiency: %.2f%%",
+						THRESHOLD, sum, index, LENGTH, index * 100.0 / LENGTH);
+	}
+
+	private static boolean isPrime(long number) {
+		long limit = (long) Math.sqrt(number);
+		// check if number is divisible by the odd primes lower than limit
+		for (int i = 1; i < limit; i++) {
+			if (number % primes[i] == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+}

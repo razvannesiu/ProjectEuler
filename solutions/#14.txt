@@ -1,0 +1,53 @@
+public class Euler14 {
+	// starting numbers of a sequence are lower than THRESHOLD
+	public static final int THRESHOLD = 1000000;
+	/*
+	 * Array that stores in length[n] the length of the Colatz sequence that
+	 * starts with n.
+	 */
+	private static long[] length = new long[THRESHOLD];
+
+	public static void main(String[] args) {
+		long start = 1; /* the start of a Colatz Sequence */
+		long colatzLength; /* length of a Colatz Sequence */
+		long maxLength = 0; /* max length of a Colatz Sequence */
+		long maxStart = 0; /* number that produces maxLength */
+
+		for (start = 1; start < THRESHOLD; start++) {
+			colatzLength = colatzLength(start);
+
+			length[(int) start] = colatzLength;
+			if (colatzLength > maxLength) {
+				maxLength = colatzLength;
+				maxStart = start;
+			}
+		}
+		System.out
+				.printf("The number under %d that produces the longest Colatz chain is %d, with a length of %d.\n",
+						THRESHOLD, maxStart, maxLength);
+	}
+
+	// returns length of a Colatz Sequence starting with start
+	private static long colatzLength(long start) {
+		long sequenceLength = 1;
+
+		while (start != 1) {
+			// if start doesn't exceed the length of the array
+			if (start < THRESHOLD) {
+				// if the length of the sequence starting with start is known
+				if (length[(int) start] != 0) {
+					// return length of sequence found so far + length of known
+					// sequence
+					return sequenceLength - 1 + length[(int) start];
+				}
+			}
+			if (start % 2 == 0) {
+				start = start / 2;
+			} else {
+				start = 3 * start + 1;
+			}
+			sequenceLength++;
+		}
+		return sequenceLength;
+	}
+}

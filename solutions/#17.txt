@@ -1,0 +1,148 @@
+public class Euler17 {
+	// initialize START with a value greater than zero
+	public static int START = 1;
+	// initialize END with a value lower than one billion
+	public static int END = 1000;
+
+	public static void main(String[] args) {
+		long sum = 0;
+		for (int number = START; number <= END; number++) {
+			sum += letterCount(number);
+		}
+		System.out
+				.printf("The number of letters used to write the numbers from %d to %d is %d.\n",
+						START, END, sum);
+	}
+
+	// counts the number of letters used to write a number
+	private static int letterCount(int nr) {
+		int letters = 0;
+
+		int millions = nr / 1000000;
+		// "million" has 7 letters
+		letters += millions != 0 ? interpretGroup(millions) + 7 : 0;
+
+		int thousands = (nr / 1000) % 1000;
+		// "thousand" has 8 letters
+		letters += thousands != 0 ? interpretGroup(thousands) + 8 : 0;
+
+		int hundreds = nr % 1000;
+		letters += interpretGroup(hundreds);
+		// "hundred" has 7 letters
+		letters += hundreds > 99 ? 7 : 0;
+
+		return letters;
+	}
+
+	// interpretes a group of maximum 3 digits that represents the millions,
+	// thousands or hundreds
+	private static int interpretGroup(int number) {
+		int letters = 0;
+
+		int digitOfHundreds = number / 100;
+		int digitOfTens = (number / 10) % 10;
+		int digitOfUnits = number % 10;
+
+		// if there are any hundreds
+		if (digitOfHundreds != 0) {
+			letters += interpretDigit(digitOfHundreds);
+			// if there are any tens or units, add 3 letters for the word "and"
+			if (digitOfTens != 0 || digitOfUnits != 0) {
+				letters += 3; // "and" has 3 letters
+			}
+		}
+
+		// if there are any tens
+		if (digitOfTens != 0) {
+			if (digitOfTens == 1) {
+				letters += interpretFrom10To19(digitOfUnits);
+			} else {
+				letters += interpretTensGreaterThan1(digitOfTens);
+				if (digitOfUnits != 0) {
+					letters += interpretDigit(digitOfUnits);
+				}
+			}
+			// if there aren't tens, but there are units
+		} else {
+			letters += interpretDigit(digitOfUnits);
+		}
+
+		return letters;
+	}
+
+	// interprets a 2 digit number between 10 and 19
+	private static int interpretFrom10To19(int digitOfUnits) {
+		int letters = 0;
+
+		switch (digitOfUnits) {
+		case 0:
+			letters = 3; // "ten"
+			break;
+		case 1:
+		case 2:
+			letters = 6; // "eleven", "twelve"
+			break;
+		case 3:
+		case 4:
+		case 8:
+		case 9:
+			letters = 8; // "thirteen", "fourteen", "eighteen", "nineteen"
+			break;
+		case 5:
+		case 6:
+			letters = 7; // "fifteen", "sixteen"
+			break;
+		case 7:
+			letters = 9; // "seventeen";
+			break;
+		}
+		return letters;
+	}
+
+	// interprets the digit of tens, if its greater than 1
+	private static int interpretTensGreaterThan1(int digitOfTens) {
+		int letters = 0;
+
+		switch (digitOfTens) {
+		case 2:
+		case 3:
+		case 8:
+		case 9:
+			letters = 6; // "twenty", "thirty", "eighty", "ninety"
+			break;
+		case 4:
+		case 5:
+		case 6:
+			letters = 5; // "forty", "fifty", "sixty"
+			break;
+		case 7:
+			letters = 7; // "seventy"
+			break;
+		}
+		return letters;
+	}
+
+	// interprets the digit of millions, thousands, hundreds or units
+	private static int interpretDigit(int digit) {
+		int letters = 0;
+
+		switch (digit) {
+		case 1:
+		case 2:
+		case 6:
+			letters = 3; // "one", "two", "six"
+			break;
+		case 3:
+		case 7:
+		case 8:
+			letters = 5; // "three", "seven", "eight"
+			break;
+		case 4:
+		case 5:
+		case 9:
+			letters = 4; // "four", "five", "nine"
+			break;
+		}
+		return letters;
+	}
+}

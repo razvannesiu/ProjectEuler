@@ -1,0 +1,13 @@
+public class Euler6 {
+	public static void main(String[] args) {
+		long sum;
+		final int NRS = 100;
+		// simplified formula: (3x^4 + 2x^3 - 3x^2 - 2x) / 12
+		sum = (long) ((3 * Math.pow(NRS, 4) + 2 * Math.pow(NRS, 3) - 3
+				* Math.pow(NRS, 2) - 2 * NRS) / 12);
+		System.out
+				.println("The difference between the sum of the squares of the first one hundred natural numbers and the square of the sum is "
+						+ sum);
+
+	}
+}
