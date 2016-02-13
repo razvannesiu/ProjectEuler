@@ -1,0 +1,72 @@
+public class Euler19 {
+	public final static int START = 1901;
+	public final static int END = 2000;
+	// 0 is Sunday, 1 is Monday, ... 6 is Saturday
+	public static final int DAY_SEARCHED = 0; /* 0 means Sunday */
+	// 1st of January of START year is FIRST_OF_JAN
+	public static final int FIRST_OF_JAN = 2; /* 2 means Tuesday */
+	// this array contains the number of days of a non-leap year
+	public static int[] days = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+	public static void main(String[] args) {
+		int currentDay = FIRST_OF_JAN;
+		int currentYear = START;
+		int dayCounter = 0;
+		int i;
+		final int DAYS_LENGTH = days.length;
+		do {
+			// check the 1st of January of this year
+			if (currentDay % 7 == DAY_SEARCHED) {
+				dayCounter++;
+			}
+
+			// if it's a leap year, change the number of days of February
+			if ((currentYear % 4 == 0 && currentYear % 100 != 0)
+					|| currentYear % 400 == 0) {
+				days[1] = 29;
+			} else {
+				days[1] = 28;
+			}
+			// check the 1st of February, March, ... December of this year
+			for (i = 0; i < DAYS_LENGTH - 1; i++) {
+				currentDay += days[i];
+				if (currentDay % 7 == DAY_SEARCHED) {
+					dayCounter++;
+				}
+			}
+			// set currentDay to the 1st of Jan of next year
+			currentDay += days[DAYS_LENGTH - 1];
+
+			currentYear++;
+		} while (currentYear <= END);
+
+		String day = "";
+
+		switch (DAY_SEARCHED) {
+		case 0:
+			day = "Sundays";
+			break;
+		case 1:
+			day = "Mondays";
+			break;
+		case 2:
+			day = "Tuesdays";
+			break;
+		case 3:
+			day = "Wednesdays";
+			break;
+		case 4:
+			day = "Thursdays";
+			break;
+		case 5:
+			day = "Fridays";
+			break;
+		case 6:
+			day = "Saturdays";
+			break;
+		}
+		System.out
+				.printf("The number of %s that fell on the first of a month from 1st January %d to 31st December %d is %d.\n",
+						day, START, END, dayCounter);
+	}
+}

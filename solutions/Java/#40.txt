@@ -1,0 +1,57 @@
+
+public class Euler40 {
+	public static void main(String[] args){
+		int product = 1;
+		final int LIMIT = 1000000;
+		for(int i = 1; i <= LIMIT; i *= 10){
+			product *= getDigit(i);
+		}
+		System.out.println("The product is: " + product);
+	}
+	
+	/**
+	 * Method that returns the nth digit of the fractional part of Champernowne's constant.
+	 * @param n Represents the index of a decimal in Champernowne's constant.
+	 * @return The nth decimal of Champernowne's constant.
+	 */
+	public static int getDigit(int n){
+		/*(the group of decimals that form) the number that contains the nth decimal 
+		 * (ie: 12th decimal is the digit 1 from the number 11)*/
+		int number = 0;
+		/*Nr of digits used to form a number (or a group of decimals that resemble a number).
+		 *(eg: 1 digit used for the numbers from 1 to 9, 2 digits for numbers from 10 to 99, etc.)
+		 *It also represents the nr of digits of the number that contains the nth decimal.*/
+		int digitsUsed = 1;
+		/*total digits used to form all the numbers with a specific nr of digits
+		 * (ie: 9 digits used for 1-digit numbers, 180 digits used for 2-digit numbers, etc.)*/
+		int totalDigits;
+		do{
+			totalDigits = digitsUsed * 9 * (int) Math.pow(10, digitsUsed - 1);
+			if(n >= totalDigits){
+				/*number is incremented by the number of numbers with a specific nr of digits
+				 * (eg: incremented by 9, 90, 900, etc. because there are 9 numbers with 1 digit, 90 numbers with 2 digits, etc.)*/
+				number += totalDigits / digitsUsed;
+				n -= totalDigits;
+			}
+			else{
+				/*Number is incremented by the number of numbers with digitsUsed digits
+				 * lower than the number that contains the nth decimal of Champernowne's constant.*/
+				number += n / digitsUsed;
+				/*the variable modulo shows us which one is the nth decimal in the number that contains the nth decimal*/
+				int modulo = n % digitsUsed;
+				//if modulo is 0, the nth decimal is the last digit of the variable number
+				if(modulo == 0){
+					return number % 10;
+				}
+				/*Otherwise, modulo represents the nth decimal's index in the number that is equal to (number + 1)
+				 * (eg: suppose number = 2794. If modulo is 1, the nth decimal is 2. If modulo is 2, the nth decimal is 7, etc.)*/
+				else{
+					number++;
+					return number / (int) Math.pow(10, digitsUsed - modulo) % 10;
+				}
+			}
+			
+			digitsUsed++;
+		}while(true);
+	}
+}

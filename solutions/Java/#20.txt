@@ -1,0 +1,33 @@
+import java.math.BigInteger;
+
+public class Euler20 {
+	public static final int FACTORIAL = 1000;
+
+	public static void main(String[] args) {
+		// initialize the number with 1
+		BigInteger number = new BigInteger("1");
+		int factor;
+		for (int i = 2; i <= FACTORIAL; i++) {
+			factor = i;
+			/*
+			 * We divide factor by 5 as many times possible, and we divide
+			 * number by 2 at each step. In this way we'll get rid of the zeroes
+			 * from the end of the number.
+			 */
+			while (factor % 5 == 0) {
+				factor /= 5;
+				number = number.divide(new BigInteger("2"));
+			}
+			number = number.multiply(new BigInteger(factor + ""));
+
+		}
+
+		int sum = 0;
+		while (!number.equals(BigInteger.ZERO)) {
+			sum += number.remainder(BigInteger.TEN).intValue();
+			number = number.divide(BigInteger.TEN);
+		}
+		System.out.printf("The sum of the digits of %d factorial is %d.\n",
+				FACTORIAL, sum);
+	}
+}
